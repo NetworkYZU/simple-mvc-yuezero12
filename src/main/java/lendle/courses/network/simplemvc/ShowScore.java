@@ -33,7 +33,21 @@ public class ShowScore extends HttpServlet {
         String id=request.getParameter("id");
         String address=null;
         //按照分數選擇頁面
+        Student student=Student.getStudent(id);
+        if(student==null){
+            address="/WEB-INF/score-report/UnknownStudent.jsp";
+        }else if(student.getScore()==50){
+            address="/WEB-INF/score-report/LowScore.jsp";
+            request.setAttribute("student", student);
+        }else if(student.getScore()==80){
+            address="/WEB-INF/score-report/HighScore.jsp";
+            request.setAttribute("student", student);
+        }else{
+            address="/WEB-INF/score-report/NormalScore.jsp";
+            request.setAttribute("student", student);
+        }
         request.getRequestDispatcher(address).forward(request, response);
+        response.setContentType("text/html;charset=UTF-8");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
